@@ -1,0 +1,16 @@
+--- tomoe-0.6.0/macros/svn.m4~	2007-05-07 06:06:54.000000000 +0200
++++ tomoe-0.6.0/macros/svn.m4	2011-07-21 14:46:32.128541432 +0200
+@@ -26,10 +26,12 @@
+                            [Use the given path to the subversion libraries.]),
+             [if test "$withval" != "yes" -a "$withval" != ""; then
+                SVN_LIBS=$withval
++	     else
++               SVN_LIBS=$svn_libs
+              fi])
+ AC_MSG_CHECKING([for Subversion libraries])
+ svn_lib=""
+-for value in $svn_libs ; do
++for value in $SVN_LIBS ; do
+   if ls $value/libsvn_client-1.* >/dev/null 2>&1; then
+     svn_lib=$value
+     break

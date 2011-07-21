@@ -1,0 +1,45 @@
+diff -up ./doc/reference/tomoe-docs.sgml.multiarch-conflict ./doc/reference/tomoe-docs.sgml
+--- ./doc/reference/tomoe-docs.sgml.multiarch-conflict	2007-04-10 17:24:20.000000000 +1000
++++ ./doc/reference/tomoe-docs.sgml	2009-01-19 09:57:04.000000000 +1000
+@@ -40,7 +40,7 @@
+     &tomoe-Writing;
+   </chapter>
+ 
+-  <index>
++  <index id="index_page">
+     <title>Index</title>
+   </index>
+ <!--
+diff -up ./lib/tomoe-char.c.multiarch-conflict ./lib/tomoe-char.c
+--- ./lib/tomoe-char.c.multiarch-conflict	2007-06-18 11:35:43.000000000 +1000
++++ ./lib/tomoe-char.c	2009-01-16 17:55:11.000000000 +1000
+@@ -92,7 +92,7 @@ tomoe_char_class_init (TomoeCharClass *k
+     spec = g_param_spec_int ("n_strokes",
+                              N_("Number of strokes"),
+                              N_("Number of strokes of the character."),
+-                             -1, G_MAXINT32, -1,
++                             -2, G_MAXINT32, -1,
+                              G_PARAM_READABLE | G_PARAM_WRITABLE);
+     g_object_class_install_property (gobject_class, PROP_N_STROKES, spec);
+ 
+diff -up ./lib/tomoe-query.c.multiarch-conflict ./lib/tomoe-query.c
+--- ./lib/tomoe-query.c.multiarch-conflict	2007-06-07 17:04:20.000000000 +1000
++++ ./lib/tomoe-query.c	2009-01-16 17:55:11.000000000 +1000
+@@ -95,7 +95,7 @@ tomoe_query_class_init (TomoeQueryClass 
+                              N_("Minimum number of strokes"),
+                              N_("Minimum number of strokes of searched "
+                                 "character."),
+-                             -1, G_MAXINT32, -1,
++                             -2, G_MAXINT32, -1,
+                              G_PARAM_READWRITE);
+     g_object_class_install_property (gobject_class, PROP_MIN_N_STROKES, spec);
+ 
+@@ -103,7 +103,7 @@ tomoe_query_class_init (TomoeQueryClass 
+                              N_("Maximum number of strokes"),
+                              N_("Maximum number of strokes of searched "
+                                 "character."),
+-                             -1, G_MAXINT32, -1,
++                             -2, G_MAXINT32, -1,
+                              G_PARAM_READWRITE);
+     g_object_class_install_property (gobject_class, PROP_MAX_N_STROKES, spec);
+ 
