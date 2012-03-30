@@ -7,7 +7,7 @@
 Summary:	Handwritten input system for Japanese and Chinese
 Name:		tomoe
 Version:	0.6.0
-Release:	2
+Release:	3
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/tomoe/%{name}-%{version}.tar.gz
