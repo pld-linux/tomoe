@@ -7,7 +7,7 @@
 Summary:	Handwritten input system for Japanese and Chinese
 Name:		tomoe
 Version:	0.6.0
-Release:	3
+Release:	4
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/tomoe/%{name}-%{version}.tar.gz
@@ -15,6 +15,7 @@ Source0:	http://downloads.sourceforge.net/tomoe/%{name}-%{version}.tar.gz
 Patch0:		%{name}-multiarch-conflict.patch
 Patch1:		%{name}-bz502662.patch
 Patch2:		%{name}-svn-libs.patch
+Patch3:		%{name}-glib2.32.patch
 URL:		http://tomoe.sourceforge.jp/
 BuildRequires:	gettext
 BuildRequires:	glib2-devel
@@ -104,6 +105,7 @@ Tomoe bindings for ruby.
 %patch0 -p0
 %patch1 -p0
 %patch2 -p1
+%patch3 -p1
 
 %{__sed} 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' data/xml2est.rb
 
