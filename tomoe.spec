@@ -7,7 +7,7 @@
 Summary:	Handwritten input system for Japanese and Chinese
 Name:		tomoe
 Version:	0.6.0
-Release:	4
+Release:	5
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/tomoe/%{name}-%{version}.tar.gz
@@ -125,6 +125,8 @@ export CFLAGS="%{rpmcflags} -I/usr/include/apr-util"
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_datadir}/tomoe/dict
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
