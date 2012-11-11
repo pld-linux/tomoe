@@ -19,15 +19,16 @@ Patch2:		%{name}-svn-libs.patch
 Patch3:		%{name}-glib2.32.patch
 URL:		http://tomoe.sourceforge.jp/
 BuildRequires:	apr-util-devel
-BuildRequires:	gettext
-BuildRequires:	glib2-devel
-BuildRequires:	gtk-doc
+BuildRequires:	gettext-devel
+BuildRequires:	glib2-devel >= 1:2.4.0
+BuildRequires:	gtk-doc >= 1.4
 BuildRequires:	hyperestraier-devel
-BuildRequires:	intltool
-BuildRequires:	libtool
+BuildRequires:	intltool >= 0.35.0
+BuildRequires:	libxslt-progs
 BuildRequires:	mysql-devel
 BuildRequires:	pakchois-devel
 BuildRequires:	perl-XML-Parser
+BuildRequires:	pkgconfig
 BuildRequires:	python
 BuildRequires:	subversion-devel
 %if %{with python}
@@ -38,19 +39,21 @@ BuildRequires:	python-pygtk-devel
 %if %{with ruby}
 BuildRequires:	ruby-gnome2-devel
 %endif
+Requires:	glib2 >= 1:2.4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-A program which does Japanese handwriting recognition.
+A program which does Japanese and Chinese handwriting recognition.
 
 %description -l pl.UTF-8
-Program rozpoznający japońskie pismo ręczne.
+Program rozpoznający japońskie i chińskie pismo ręczne.
 
 %package devel
 Summary:	Header files for tomoe library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki tomoe
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	glib2-devel >= 1:2.4.0
 
 %description devel
 The tomoe-devel package includes the header files for the tomoe
@@ -149,6 +152,7 @@ Wiązania tomoe dla języka Ruby.
 %{__automake}
 export CFLAGS="%{rpmcflags} -I/usr/include/apr-util"
 %configure \
+	UNZIP=/usr/bin/unzip \
 	%{!?with_static_libs:--disable-static} \
 	--enable-gtk-doc \
 	--with-html-dir=%{_gtkdocdir} \
@@ -196,7 +200,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/tomoe
 %dir %{_datadir}/tomoe/dict
 %dir %{_datadir}/tomoe/recognizer
-%{_datadir}/tomoe/recognizer/*.xml
+%{_datadir}/tomoe/recognizer/handwriting-*.xml
 %{_datadir}/tomoe/dict.dtd
 
 %files devel
