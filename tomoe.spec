@@ -5,6 +5,7 @@
 %bcond_without	static_libs	# don't build static libraries
 #
 Summary:	Handwritten input system for Japanese and Chinese
+Summary(pl.UTF-8):	System wprowadzania pisma ręcznego dla japońskiego i chińskiego
 Name:		tomoe
 Version:	0.6.0
 Release:	7
@@ -17,13 +18,18 @@ Patch1:		%{name}-bz502662.patch
 Patch2:		%{name}-svn-libs.patch
 Patch3:		%{name}-glib2.32.patch
 URL:		http://tomoe.sourceforge.jp/
+BuildRequires:	apr-util-devel
 BuildRequires:	gettext
 BuildRequires:	glib2-devel
 BuildRequires:	gtk-doc
+BuildRequires:	hyperestraier-devel
 BuildRequires:	intltool
 BuildRequires:	libtool
-BuildRequires:	perl(XML::Parser)
+BuildRequires:	mysql-devel
+BuildRequires:	pakchois-devel
+BuildRequires:	perl-XML-Parser
 BuildRequires:	python
+BuildRequires:	subversion-devel
 %if %{with python}
 BuildRequires:	python-devel
 BuildRequires:	python-pygobject-devel
@@ -32,18 +38,17 @@ BuildRequires:	python-pygtk-devel
 %if %{with ruby}
 BuildRequires:	ruby-gnome2-devel
 %endif
-BuildRequires:	apr-util-devel
-BuildRequires:	hyperestraier-devel
-BuildRequires:	mysql-devel
-BuildRequires:	pakchois-devel
-BuildRequires:	subversion-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 A program which does Japanese handwriting recognition.
 
+%description -l pl.UTF-8
+Program rozpoznający japońskie pismo ręczne.
+
 %package devel
-Summary:	Tomoe development files
+Summary:	Header files for tomoe library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki tomoe
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -52,53 +57,81 @@ The tomoe-devel package includes the header files for the tomoe
 package. Install this package if you want to develop programs which
 use tomoe.
 
+%description devel -l pl.UTF-8
+Ten pakiet zawiera pliki nagłówkowe biblioteki tomoe. Należy go
+zainstalować, aby rozwijać programy wykorzystujące tomoe.
+
 %package static
 Summary:	Tomoe static library
+Summary(pl.UTF-8):	Statyczna biblioteka tomoe
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Tomoe static library.
 
+%description static -l pl.UTF-8
+Statyczna biblioteka tomoe.
+
 %package hyperestraier
 Summary:	Hyper Estraier dictionary support for tomoe
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
+Summary(pl.UTF-8):	Obsługa słowników Hyper Estraiera dla tomoe
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
 
 %description hyperestraier
 Hyper Estraier dictionary support for tomoe.
 
+%description hyperestraier -l pl.UTF-8
+Obsługa słowników Hyper Estraiera dla tomoe.
+
 %package mysql
-Summary:	Mysql dictionary support for tomoe
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
+Summary:	MySQL dictionary support for tomoe
+Summary(pl.UTF-8):	Obsługa słowników MySQL dla tomoe
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
 
 %description mysql
-Mysql dictionary support for tomoe.
+MySQL dictionary support for tomoe.
+
+%description mysql -l pl.UTF-8
+Obsługa słowników MySQL dla tomoe.
 
 %package svn
 Summary:	Subversion dictionary support for tomoe
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
+Summary(pl.UTF-8):	Obsługa słowników Subversion dla tomoe
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
 
 %description svn
 Subversion dictionary support for tomoe.
 
+%description svn -l pl.UTF-8
+Obsługa słowników Subversion dla tomoe.
+
 %package -n python-tomoe
-Summary:	Tomoe bindings for python
-Group:		Development/Libraries
+Summary:	Tomoe bindings for Python
+Summary(pl.UTF-8):	Wiązania tomoe dla Pythona
+Group:		Libraries/Python
 Requires:	%{name} = %{version}-%{release}
 
 %description -n python-tomoe
-Tomoe bindings for python.
+Tomoe bindings for Python.
+
+%description -n python-tomoe -l pl.UTF-8
+Wiązania tomoe dla Pythona.
 
 %package -n ruby-tomoe
-Summary:	Tomoe bindings for ruby
-Group:		Development/Libraries
+Summary:	Tomoe bindings for Ruby
+Summary(pl.UTF-8):	Wiązania tomoe dla języka Ruby
+Group:		Development/Languages
 Requires:	%{name} = %{version}-%{release}
 
 %description -n ruby-tomoe
-Tomoe bindings for ruby.
+Tomoe bindings for Ruby.
+
+%description -n ruby-tomoe -l pl.UTF-8
+Wiązania tomoe dla języka Ruby.
 
 %prep
 %setup -q
@@ -117,9 +150,9 @@ Tomoe bindings for ruby.
 export CFLAGS="%{rpmcflags} -I/usr/include/apr-util"
 %configure \
 	%{!?with_static_libs:--disable-static} \
-	--with-svn-lib=%{_libdir} \
 	--enable-gtk-doc \
-	--with-html-dir=%{_gtkdocdir}
+	--with-html-dir=%{_gtkdocdir} \
+	--with-svn-lib=%{_libdir}
 
 %{__make}
 
@@ -134,13 +167,17 @@ install -d $RPM_BUILD_ROOT%{_datadir}/tomoe/dict
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tomoe/module/{dict,recognizer}/*.{a,la}
 %{__rm} $RPM_BUILD_ROOT%{py_sitedir}/tomoe.{a,la}
 
+%if %{without ruby}
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/tomoe/xml2est.rb
+%endif
+
 %find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
@@ -148,7 +185,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/tomoe
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/tomoe/config
 %attr(755,root,root) %{_libdir}/libtomoe.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtomoe.so.[0-9]
+%attr(755,root,root) %ghost %{_libdir}/libtomoe.so.0
 %dir %{_libdir}/tomoe
 %dir %{_libdir}/tomoe/module
 %dir %{_libdir}/tomoe/module/dict
@@ -199,7 +236,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python}
 %files -n python-tomoe
 %defattr(644,root,root,755)
-%{_pkgconfigdir}/pytomoe.pc
 %attr(755,root,root) %{py_sitedir}/tomoe.so
 %{_datadir}/tomoe/python
+%{_pkgconfigdir}/pytomoe.pc
 %endif
