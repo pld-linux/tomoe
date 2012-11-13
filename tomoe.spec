@@ -39,7 +39,7 @@ BuildRequires:	subversion-devel
 %if %{with python}
 BuildRequires:	python-devel
 BuildRequires:	python-pygobject-devel
-BuildRequires:	python-pygtk-devel
+BuildRequires:	python-pygtk-devel >= 2:2.0
 %endif
 %if %{with ruby}
 BuildRequires:	ruby-glib2-devel
