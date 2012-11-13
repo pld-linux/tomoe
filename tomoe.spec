@@ -1,7 +1,7 @@
 #
 # Conditional build:
-%bcond_without	python		# build without python bindings
-%bcond_with	ruby		# build with ruby bindings
+%bcond_without	python		# build without Python bindings
+%bcond_without	ruby		# build without Ruby bindings
 %bcond_without	static_libs	# don't build static libraries
 #
 Summary:	Handwritten input system for Japanese and Chinese
@@ -17,13 +17,17 @@ Patch0:		%{name}-multiarch-conflict.patch
 Patch1:		%{name}-bz502662.patch
 Patch2:		%{name}-svn-libs.patch
 Patch3:		%{name}-glib2.32.patch
+Patch4:		%{name}-ruby.patch
 URL:		http://tomoe.sourceforge.jp/
 BuildRequires:	apr-util-devel
+BuildRequires:	autoconf >= 2.57
+BuildRequires:	automake
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.4.0
 BuildRequires:	gtk-doc >= 1.4
 BuildRequires:	hyperestraier-devel
 BuildRequires:	intltool >= 0.35.0
+BuildRequires:	libtool
 BuildRequires:	libxslt-progs
 BuildRequires:	mysql-devel
 BuildRequires:	pakchois-devel
@@ -37,7 +41,7 @@ BuildRequires:	python-pygobject-devel
 BuildRequires:	python-pygtk-devel
 %endif
 %if %{with ruby}
-BuildRequires:	ruby-gnome2-devel
+BuildRequires:	ruby-glib2-devel
 %endif
 Requires:	glib2 >= 1:2.4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -129,6 +133,7 @@ Summary:	Tomoe bindings for Ruby
 Summary(pl.UTF-8):	Wiązania tomoe dla języka Ruby
 Group:		Development/Languages
 Requires:	%{name} = %{version}-%{release}
+Requires:	ruby-glib2
 
 %description -n ruby-tomoe
 Tomoe bindings for Ruby.
@@ -136,14 +141,29 @@ Tomoe bindings for Ruby.
 %description -n ruby-tomoe -l pl.UTF-8
 Wiązania tomoe dla języka Ruby.
 
+%package -n ruby-tomoe-devel
+Summary:	Header file for Ruby/Tomoe library
+Summary(pl.UTF-8):	Plik nagłówkowy biblioteki Ruby/Tomoe
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+Requires:	ruby-glib2-devel
+Requires:	ruby-tomoe = %{version}-%{release}
+
+%description -n ruby-tomoe-devel
+Header file for Ruby/Tomoe library.
+
+%description -n ruby-tomoe-devel -l pl.UTF-8
+Plik nagłówkowy biblioteki Ruby/Tomoe.
+
 %prep
 %setup -q
 %patch0 -p0
 %patch1 -p0
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1 -b .orig
 
-%{__sed} 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' data/xml2est.rb
+%{__sed} -i -e 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' data/xml2est.rb
 
 %build
 %{__libtoolize}
@@ -170,6 +190,7 @@ install -d $RPM_BUILD_ROOT%{_datadir}/tomoe/dict
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tomoe/module/{dict,recognizer}/*.{a,la}
 %{__rm} $RPM_BUILD_ROOT%{py_sitedir}/tomoe.{a,la}
+%{?with_ruby:%{__rm} $RPM_BUILD_ROOT%{ruby_sitearchdir}/tomoe.{a,la}}
 
 %if %{without ruby}
 %{__rm} $RPM_BUILD_ROOT%{_datadir}/tomoe/xml2est.rb
@@ -228,19 +249,22 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/tomoe/module/dict/svn.so
 
-%if %{with ruby}
-%files -n ruby-tomoe
-%defattr(644,root,root,755)
-%{ruby_archdir}
-%{_libdir}/ruby/site_ruby/1.8/tomoe.rb
-%{_libdir}/ruby/site_ruby/1.8/*-linux/*
-%attr(755,root,root) %{_datadir}/tomoe/xml2est.rb
-%endif
-
 %if %{with python}
 %files -n python-tomoe
 %defattr(644,root,root,755)
 %attr(755,root,root) %{py_sitedir}/tomoe.so
 %{_datadir}/tomoe/python
 %{_pkgconfigdir}/pytomoe.pc
+%endif
+
+%if %{with ruby}
+%files -n ruby-tomoe
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_datadir}/tomoe/xml2est.rb
+%attr(755,root,root) %{ruby_sitearchdir}/tomoe.so
+%{ruby_sitelibdir}/tomoe.rb
+
+%files -n ruby-tomoe-devel
+%defattr(644,root,root,755)
+%{ruby_sitearchdir}/rbtomoe.h
 %endif

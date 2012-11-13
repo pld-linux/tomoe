@@ -1,0 +1,32 @@
+--- tomoe-0.6.0/macros/ruby.m4.orig	2007-06-11 03:05:42.000000000 +0200
++++ tomoe-0.6.0/macros/ruby.m4	2012-11-12 21:18:04.642203203 +0100
+@@ -28,14 +28,15 @@
+ 
+   changequote(<<, >>)
+   for var_name in archdir sitearchdir CFLAGS LIBRUBYARG libdir \
+-                  sitelibdir sitearchdir; do
++                  sitelibdir sitearchdir rubyhdrdir sitehdrdir arch; do
+     rbconfig_tmp=`$rbconfig "print Config::CONFIG['$var_name']"`
+     eval "rbconfig_$var_name=\"$rbconfig_tmp\""
+   done
++  rbconfig_archhdrdir="$rbconfig_rubyhdrdir/$rbconfig_arch"
+   changequote([, ])
+ 
+-  RUBY_CFLAGS="$RUBY_CFLAGS -I$rbconfig_archdir "
+-  RUBY_CFLAGS="$RUBY_CFLAGS -I$rbconfig_sitearchdir "
++  RUBY_CFLAGS="$RUBY_CFLAGS -I$rbconfig_archdir -I$rbconfig_rubyhdrdir -I$rbconfig_archhdrdir"
++  RUBY_CFLAGS="$RUBY_CFLAGS -I$rbconfig_sitearchdir -I$rbconfig_sitehdrdir"
+   RUBY_CFLAGS="$RUBY_CFLAGS $rbconfig_CFLAGS "
+   RUBY_LIBS="$rbconfig_LIBRUBYARG"
+   RUBY_LDFLAGS="-L$rbconfig_libdir"
+--- tomoe-0.6.0/bindings/ruby/tomoe-rb-char.c.orig	2007-06-06 02:44:38.000000000 +0200
++++ tomoe-0.6.0/bindings/ruby/tomoe-rb-char.c	2012-11-12 21:20:44.718863156 +0100
+@@ -13,7 +13,7 @@
+     if (NIL_P(xml)) {
+         chr = tomoe_char_new();
+     } else {
+-        chr = tomoe_char_new_from_xml_data(RVAL2CSTR(xml), RSTRING(xml)->len);
++        chr = tomoe_char_new_from_xml_data(RVAL2CSTR(xml), RSTRING_LEN(xml));
+     }
+ 
+     G_INITIALIZE(self, chr);
