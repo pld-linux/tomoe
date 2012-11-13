@@ -8,7 +8,7 @@ Summary:	Handwritten input system for Japanese and Chinese
 Summary(pl.UTF-8):	System wprowadzania pisma ręcznego dla japońskiego i chińskiego
 Name:		tomoe
 Version:	0.6.0
-Release:	8
+Release:	9
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/tomoe/%{name}-%{version}.tar.gz
@@ -161,7 +161,7 @@ Plik nagłówkowy biblioteki Ruby/Tomoe.
 %patch1 -p0
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1 -b .orig
+%patch4 -p1
 
 %{__sed} -i -e 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' data/xml2est.rb
 
