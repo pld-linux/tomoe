@@ -128,6 +128,20 @@ Tomoe bindings for Python.
 %description -n python-tomoe -l pl.UTF-8
 Wiązania tomoe dla Pythona.
 
+%package -n python-tomoe-devel
+Summary:	Development files for Tomoe Python binding
+Summary(pl.UTF-8):	Pliki programistyczne wiązań Pythona do Tomoe
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+Requires:	python-tomoe = %{version}-%{release}
+Requires:	python-pygobject-devel
+
+%description -n python-tomoe-devel
+Development files for Tomoe Python binding.
+
+%description -n python-tomoe-devel -l pl.UTF-8
+Pliki programistyczne wiązań Pythona do Tomoe.
+
 %package -n ruby-tomoe
 Summary:	Tomoe bindings for Ruby
 Summary(pl.UTF-8):	Wiązania tomoe dla języka Ruby
@@ -253,7 +267,11 @@ rm -rf $RPM_BUILD_ROOT
 %files -n python-tomoe
 %defattr(644,root,root,755)
 %attr(755,root,root) %{py_sitedir}/tomoe.so
-%{_datadir}/tomoe/python
+
+%files -n python-tomoe-devel
+%defattr(644,root,root,755)
+%dir %{_datadir}/tomoe/python
+%{_datadir}/tomoe/python/tomoe.defs
 %{_pkgconfigdir}/pytomoe.pc
 %endif
 
