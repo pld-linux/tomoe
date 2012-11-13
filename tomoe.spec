@@ -18,6 +18,7 @@ Patch1:		%{name}-bz502662.patch
 Patch2:		%{name}-svn-libs.patch
 Patch3:		%{name}-glib2.32.patch
 Patch4:		%{name}-ruby.patch
+Patch5:		%{name}-format.patch
 URL:		http://tomoe.sourceforge.jp/
 BuildRequires:	apr-util-devel
 BuildRequires:	autoconf >= 2.57
@@ -176,6 +177,7 @@ Plik nagłówkowy biblioteki Ruby/Tomoe.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %{__sed} -i -e 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' data/xml2est.rb
 

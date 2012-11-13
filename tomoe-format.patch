@@ -1,0 +1,11 @@
+--- tomoe-0.6.0/lib/tomoe-xml-parser.c.orig	2012-11-13 16:07:39.936025612 +0100
++++ tomoe-0.6.0/lib/tomoe-xml-parser.c	2012-11-13 17:22:39.095836800 +0100
+@@ -82,7 +82,7 @@
+ 
+     *error = g_error_new (G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+-                          buf);
++                          "%s", buf);
+ }
+ 
+ static void
