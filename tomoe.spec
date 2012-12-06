@@ -8,7 +8,7 @@ Summary:	Handwritten input system for Japanese and Chinese
 Summary(pl.UTF-8):	System wprowadzania pisma ręcznego dla japońskiego i chińskiego
 Name:		tomoe
 Version:	0.6.0
-Release:	9
+Release:	10
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/tomoe/%{name}-%{version}.tar.gz
