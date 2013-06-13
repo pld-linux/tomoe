@@ -8,7 +8,7 @@ Summary:	Handwritten input system for Japanese and Chinese
 Summary(pl.UTF-8):	System wprowadzania pisma ręcznego dla japońskiego i chińskiego
 Name:		tomoe
 Version:	0.6.0
-Release:	10
+Release:	11
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/tomoe/%{name}-%{version}.tar.gz
@@ -19,6 +19,7 @@ Patch2:		%{name}-svn-libs.patch
 Patch3:		%{name}-glib2.32.patch
 Patch4:		%{name}-ruby.patch
 Patch5:		%{name}-format.patch
+Patch6:		am.patch
 URL:		http://tomoe.sourceforge.jp/
 BuildRequires:	apr-util-devel
 BuildRequires:	autoconf >= 2.57
@@ -178,6 +179,7 @@ Plik nagłówkowy biblioteki Ruby/Tomoe.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %{__sed} -i -e 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' data/xml2est.rb
 
@@ -190,6 +192,8 @@ export CFLAGS="%{rpmcflags} -I/usr/include/apr-util"
 %configure \
 	UNZIP=/usr/bin/unzip \
 	%{!?with_static_libs:--disable-static} \
+	%{?with_ruby:--with-ruby-bindingdir=%{ruby_vendorarchdir}} \
+	%{?with_ruby:--with-ruby-libdir=%{ruby_vendorlibdir}} \
 	--enable-gtk-doc \
 	--with-html-dir=%{_gtkdocdir} \
 	--with-svn-lib=%{_libdir}
@@ -206,7 +210,7 @@ install -d $RPM_BUILD_ROOT%{_datadir}/tomoe/dict
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tomoe/module/{dict,recognizer}/*.{a,la}
 %{__rm} $RPM_BUILD_ROOT%{py_sitedir}/tomoe.{a,la}
-%{?with_ruby:%{__rm} $RPM_BUILD_ROOT%{ruby_sitearchdir}/tomoe.{a,la}}
+%{?with_ruby:%{__rm} $RPM_BUILD_ROOT%{ruby_vendorarchdir}/tomoe.{a,la}}
 
 %if %{without ruby}
 %{__rm} $RPM_BUILD_ROOT%{_datadir}/tomoe/xml2est.rb
@@ -281,10 +285,10 @@ rm -rf $RPM_BUILD_ROOT
 %files -n ruby-tomoe
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_datadir}/tomoe/xml2est.rb
-%attr(755,root,root) %{ruby_sitearchdir}/tomoe.so
-%{ruby_sitelibdir}/tomoe.rb
+%attr(755,root,root) %{ruby_vendorarchdir}/tomoe.so
+%{ruby_vendorlibdir}/tomoe.rb
 
 %files -n ruby-tomoe-devel
 %defattr(644,root,root,755)
-%{ruby_sitearchdir}/rbtomoe.h
+%{ruby_vendorarchdir}/rbtomoe.h
 %endif
