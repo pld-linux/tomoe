@@ -1,0 +1,11 @@
+--- tomoe-0.6.0/configure.ac~	2007-06-12 10:10:04.000000000 +0200
++++ tomoe-0.6.0/configure.ac	2013-06-13 12:45:36.952117907 +0200
+@@ -9,7 +9,7 @@
+ 
+ AC_INIT(tomoe, [tomoe_version])
+ AM_INIT_AUTOMAKE(tomoe, [tomoe_version])
+-AM_CONFIG_HEADER(config.h)
++AC_CONFIG_HEADERS(config.h)
+ 
+ AC_ENABLE_SHARED(yes)
+ AC_ENABLE_STATIC(yes)
