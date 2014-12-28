@@ -24,7 +24,7 @@ URL:		http://tomoe.sourceforge.jp/
 BuildRequires:	apr-util-devel
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.4.0
 BuildRequires:	gtk-doc >= 1.4
 BuildRequires:	hyperestraier-devel
