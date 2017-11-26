@@ -5,8 +5,9 @@
    changequote(<<, >>)
    for var_name in archdir sitearchdir CFLAGS LIBRUBYARG libdir \
 -                  sitelibdir sitearchdir; do
+-    rbconfig_tmp=`$rbconfig "print Config::CONFIG['$var_name']"`
 +                  vendorlibdir vendorarchdir rubyhdrdir sitehdrdir arch; do
-     rbconfig_tmp=`$rbconfig "print Config::CONFIG['$var_name']"`
++    rbconfig_tmp=`$rbconfig "print RbConfig::CONFIG['$var_name']"`
      eval "rbconfig_$var_name=\"$rbconfig_tmp\""
    done
 +  rbconfig_archhdrdir="$rbconfig_rubyhdrdir/$rbconfig_arch"
