@@ -1,0 +1,11 @@
+--- tomoe-0.6.0/lib/tomoe-xml-parser.c.orig	2020-08-26 16:45:28.030391010 +0200
++++ tomoe-0.6.0/lib/tomoe-xml-parser.c	2020-08-26 17:23:07.704815970 +0200
+@@ -441,7 +441,7 @@
+     f = fopen (filename, "rb");
+     if (!f) {
+         g_warning ("failed to open dictionary file %s: %s", filename,
+-                   sys_errlist[errno]);
++                   g_strerror(errno));
+     }
+     g_return_val_if_fail (f, FALSE);
+ 
