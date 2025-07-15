@@ -174,14 +174,14 @@ Plik nagłówkowy biblioteki Ruby/Tomoe.
 
 %prep
 %setup -q
-%patch0 -p0
-%patch1 -p0
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
+%patch -P0 -p0
+%patch -P1 -p0
+%patch -P2 -p1
+%patch -P3 -p1
+%patch -P4 -p1
+%patch -P5 -p1
+%patch -P6 -p1
+%patch -P7 -p1
 
 %{__sed} -i -e 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' data/xml2est.rb
 
